@@ -6,14 +6,14 @@
 #    By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 16:00:17 by isojo-go          #+#    #+#              #
-#    Updated: 2023/06/23 16:00:32 by isojo-go         ###   ########.fr        #
+#    Updated: 2023/07/07 08:05:15 by isojo-go         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # --- Makefile structure ---
 
 ## Program Name:
-NAME	=	main
+NAME	=	btc
 EXT		=	.cpp
 
 ## Folder Structure:
