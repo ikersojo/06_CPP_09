@@ -6,21 +6,15 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:00:45 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/07/10 16:35:34 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/07/10 17:33:26 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange(void)
-{
+BitcoinExchange::BitcoinExchange(void) {}
 
-}
-
-BitcoinExchange::~BitcoinExchange(void)
-{
-
-}
+BitcoinExchange::~BitcoinExchange(void) {}
 
 void	BitcoinExchange::importDB(const std::string& db_file)
 {
@@ -30,17 +24,28 @@ void	BitcoinExchange::importDB(const std::string& db_file)
 	inFile.open(db_file);
 	if (!inFile.is_open())
 		throw std::invalid_argument("Error: Database File could not be openned.");
+
+	this->_min = Date(2100,1,1);
 	
 	while (getline(inFile, line))
 	{
 		if (line.find(",") != std::string::npos && line.find("date") == std::string::npos)
 		{
-			size_t firstComaPos = line.find(',');
-			std::string	extractedDate = line.substr(0, firstComaPos);
-			std::string	extractedValue_str = line.substr(firstComaPos + 1, line.size());
-			double		extractedValue = std::stod(extractedValue_str);
+			try
+			{
+				size_t		firstComaPos = line.find(',');
+				Date		extractedDate(line.substr(0, firstComaPos));
+				double		extractedValue = std::stod(line.substr(firstComaPos + 1, line.size()));
 
-			_exchangeRateDB[extractedDate] = extractedValue;
+				_exchangeRateDB[extractedDate] = extractedValue;
+				if (extractedDate < this->_min)
+					_min = extractedDate;
+			}
+			catch(const std::exception& e)
+			{
+				std::cerr << e.what() << " => line: " << line << std::endl;
+			}
+			
 		}
 	}
 	inFile.close();
@@ -48,8 +53,8 @@ void	BitcoinExchange::importDB(const std::string& db_file)
 
 void	BitcoinExchange::printDB(void)
 {
-	const int MAXVAL = 15;
-	std::map< std::string, double >::iterator	itr = this->_exchangeRateDB.begin();
+	const int MAXVAL = 30;
+	std::map< Date, double >::iterator	itr = this->_exchangeRateDB.begin();
 
 	std::cout << std::endl << "DATABASE (date: xr)" << std::endl;
 	std::cout << "----------------------------------" << std::endl;
@@ -66,39 +71,36 @@ void	BitcoinExchange::printDB(void)
 
 void	BitcoinExchange::processLine(const std::string& line)
 {
-	size_t		firstLinePos = line.find(' ');
-	std::string	extractedDate = line.substr(0, firstLinePos);
-	std::string	extractedValue_str = line.substr(firstLinePos + 3, line.size());
-	double		extractedValue = std::stod(extractedValue_str);
-	double		xr;
-
 	try
 	{
-		Date date(extractedDate);
+		size_t	firstLinePos = line.find(' ');
+		Date	extractedDate(line.substr(0, firstLinePos));
+		double	extractedValue = std::stod(line.substr(firstLinePos + 1, line.size()));
+		double	xr;
 		bool	found = false;
-		while (!found)
+
+		while (!found && extractedDate > this->_min)
 		{
-			if (this->_exchangeRateDB.find(date.str()) != this->_exchangeRateDB.end())
+			if (this->_exchangeRateDB.find(extractedDate) != this->_exchangeRateDB.end())
 			{
-				xr = this->_exchangeRateDB.find(date.str())->second;
+				xr = this->_exchangeRateDB.find(extractedDate)->second;
 				found = true;
 			}
-			date.decrement();
+			extractedDate.decrement();
 		}
-
+		
+		if (extractedValue < 0)
+			std::cout << "Error: not a positive number." << std::endl;
+		else if (extractedValue > 1000)
+			std::cout << "Error: too large a number." << std::endl;
+		else
+			std::cout << extractedDate << " => " << extractedValue << " = "
+				<< xr * extractedValue << std::endl;
 	}
 	catch(const std::exception& e)
 	{
 		std::cout << "Error: bad input => " << line << std::endl;
 	}
-	
-	if (extractedValue < 0)
-		std::cout << "Error: not a positive number." << std::endl;
-	else if (extractedValue > 1000)
-		std::cout << "Error: too large a number." << std::endl;
-	else
-		std::cout << extractedDate << " => " << extractedValue << " = "
-			<< xr * extractedValue << std::endl;
 }
 
 void	BitcoinExchange::processInput(const std::string& input_file)

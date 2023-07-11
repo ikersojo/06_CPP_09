@@ -10,6 +10,7 @@
 	class Date
 	{
 		public:
+			Date(void);
 			Date(int year, int month, int day);
 			Date(const std::string& str);
 			Date(const Date& obj);
@@ -35,7 +36,6 @@
 			std::string		str(void) const;
 
 		private:
-			Date(void);
 			int			_year;
 			int			_month;
 			int			_day;

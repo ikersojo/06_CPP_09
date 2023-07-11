@@ -1,5 +1,12 @@
 #include "../inc/Date.hpp"
 
+Date::Date(void)
+{
+	this->_year = 1900;
+	this->_month = 1; 
+	this->_day = 1;
+}
+
 Date::Date(int year, int month, int day)
 {
 	this->_year = year;
@@ -58,71 +65,40 @@ Date&	Date::operator=(const Date& rhs)
 	}
 	return (*this);
 }
-
-bool	Date::operator<(const Date& rhs) const
+bool Date::operator<(const Date& rhs) const
 {
-	if (this->getYear() <= rhs.getYear())
-	{
-		if (this->getMonth() <= rhs.getMonth())
-		{
-			if (this->getMonth() < rhs.getMonth())
-				return (true);
-		}
-	}
-	return (false);
+    if (this->getYear() < rhs.getYear())
+        return true;
+    else if (this->getYear() == rhs.getYear() && this->getMonth() < rhs.getMonth())
+        return true;
+    else if (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() < rhs.getDay())
+        return true;
+    return false;
 }
 
-bool	Date::operator<=(const Date& rhs) const
+bool Date::operator<=(const Date& rhs) const
 {
-	if (this->getYear() <= rhs.getYear())
-	{
-		if (this->getMonth() <= rhs.getMonth())
-		{
-			if (this->getMonth() <= rhs.getMonth())
-				return (true);
-		}
-	}
-	return (false);
+    return (*this < rhs) || (*this == rhs);
 }
 
-bool	Date::operator>(const Date& rhs) const
+bool Date::operator>(const Date& rhs) const
 {
-	if (this->getYear() >= rhs.getYear())
-	{
-		if (this->getMonth() >= rhs.getMonth())
-		{
-			if (this->getMonth() > rhs.getMonth())
-				return (true);
-		}
-	}
-	return (false);
+    return !(*this <= rhs);
 }
 
-bool	Date::operator>=(const Date& rhs) const
+bool Date::operator>=(const Date& rhs) const
 {
-	if (this->getYear() >= rhs.getYear())
-	{
-		if (this->getMonth() >= rhs.getMonth())
-		{
-			if (this->getMonth() >= rhs.getMonth())
-				return (true);
-		}
-	}
-	return (false);
+    return !(*this < rhs);
 }
 
-bool	Date::operator==(const Date& rhs) const
+bool Date::operator==(const Date& rhs) const
 {
-	if (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getMonth() == rhs.getMonth())
-		return (true);
-	return (false);
+    return (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() == rhs.getDay());
 }
 
-bool	Date::operator!=(const Date& rhs) const
+bool Date::operator!=(const Date& rhs) const
 {
-	if (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getMonth() == rhs.getMonth())
-		return (false);
-	return (true);
+    return !(*this == rhs);
 }
 
 void	Date::increment(void)

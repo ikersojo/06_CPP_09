@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:00:36 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/07/10 16:37:59 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/07/10 17:15:01 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		main(int argc, char **argv)
 		BitcoinExchange btc;
 
 		btc.importDB("./db/data.csv");
-		btc.printDB();
+		// btc.printDB();
 
 		btc.processInput(argv[1]);
 
