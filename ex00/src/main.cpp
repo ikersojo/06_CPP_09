@@ -25,7 +25,7 @@ int		main(int argc, char **argv)
 		BitcoinExchange btc;
 
 		btc.importDB("./db/data.csv");
-		// btc.printDB();
+		btc.printDB();
 
 		btc.processInput(argv[1]);
 

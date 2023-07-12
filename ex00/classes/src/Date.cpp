@@ -29,9 +29,9 @@ Date::Date(const std::string& str)
 	{
 		try
 		{
-			this->_year = std::stoi(str.substr(0, firstDashPos));
-			this->_month = std::stoi(str.substr(firstDashPos + 1, secondDashPos - firstDashPos - 1));
-			this->_day = std::stoi(str.substr(secondDashPos + 1));
+			this->_year = atoi(str.substr(0, firstDashPos).c_str());
+			this->_month = atoi(str.substr(firstDashPos + 1, secondDashPos - firstDashPos - 1).c_str());
+			this->_day = atoi(str.substr(secondDashPos + 1).c_str());
 		}
 		catch(const std::exception& e)
 		{
@@ -67,38 +67,38 @@ Date&	Date::operator=(const Date& rhs)
 }
 bool Date::operator<(const Date& rhs) const
 {
-    if (this->getYear() < rhs.getYear())
-        return true;
-    else if (this->getYear() == rhs.getYear() && this->getMonth() < rhs.getMonth())
-        return true;
-    else if (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() < rhs.getDay())
-        return true;
-    return false;
+	if (this->getYear() < rhs.getYear())
+		return true;
+	else if (this->getYear() == rhs.getYear() && this->getMonth() < rhs.getMonth())
+		return true;
+	else if (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() < rhs.getDay())
+		return true;
+	return false;
 }
 
 bool Date::operator<=(const Date& rhs) const
 {
-    return (*this < rhs) || (*this == rhs);
+	return (*this < rhs) || (*this == rhs);
 }
 
 bool Date::operator>(const Date& rhs) const
 {
-    return !(*this <= rhs);
+	return !(*this <= rhs);
 }
 
 bool Date::operator>=(const Date& rhs) const
 {
-    return !(*this < rhs);
+	return !(*this < rhs);
 }
 
 bool Date::operator==(const Date& rhs) const
 {
-    return (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() == rhs.getDay());
+	return (this->getYear() == rhs.getYear() && this->getMonth() == rhs.getMonth() && this->getDay() == rhs.getDay());
 }
 
 bool Date::operator!=(const Date& rhs) const
 {
-    return !(*this == rhs);
+	return !(*this == rhs);
 }
 
 void	Date::increment(void)
@@ -149,14 +149,28 @@ int		Date::getDay(void) const
 std::string	Date::str(void) const
 {
 	std::string dateString;
-	std::string yearStr = std::to_string(this->_year);
-	std::string monthStr = std::to_string(this->_month);
-	std::string dayStr = std::to_string(this->_day);
+	std::stringstream ss;
+	std::string yearStr;
+	std::string monthStr;
+	std::string dayStr;
+
+	ss << this->_year;
+	ss >> yearStr;
+	ss.clear();
+
+	ss << this->_month;
+	ss >> monthStr;
+	ss.clear();
+
+	ss << this->_day;
+	ss >> dayStr;
+	ss.clear();
 
 	if (monthStr.length() < 2)
 		monthStr = "0" + monthStr;
 	if (dayStr.length() < 2)
 		dayStr = "0" + dayStr;
+
 	dateString = yearStr + "-" + monthStr + "-" + dayStr;
 	return dateString;
 }

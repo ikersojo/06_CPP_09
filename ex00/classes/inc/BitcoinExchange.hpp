@@ -18,7 +18,7 @@
 	#include <fstream>
 	#include <stdexcept>
 	#include "../inc/Date.hpp"
-
+	#include <cstdlib>
 
 	class BitcoinExchange
 	{

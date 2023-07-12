@@ -4,6 +4,8 @@
 	#include <string>
 	#include <iostream>
 	#include <stdexcept>
+	#include <sstream>
+	#include <cstdlib>
 
 	int		daysInMonth(int month, int year);
 

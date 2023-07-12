@@ -21,7 +21,7 @@ void	BitcoinExchange::importDB(const std::string& db_file)
 	std::ifstream	inFile;
 	std::string		line;
 
-	inFile.open(db_file);
+	inFile.open(db_file.c_str());
 	if (!inFile.is_open())
 		throw std::invalid_argument("Error: Database File could not be openned.");
 
@@ -35,7 +35,7 @@ void	BitcoinExchange::importDB(const std::string& db_file)
 			{
 				size_t		firstComaPos = line.find(',');
 				Date		extractedDate(line.substr(0, firstComaPos));
-				double		extractedValue = std::stod(line.substr(firstComaPos + 1, line.size()));
+				double		extractedValue = strtod(line.substr(firstComaPos + 1, line.size()).c_str(), NULL);
 
 				_exchangeRateDB[extractedDate] = extractedValue;
 				if (extractedDate < this->_min)
@@ -53,7 +53,7 @@ void	BitcoinExchange::importDB(const std::string& db_file)
 
 void	BitcoinExchange::printDB(void)
 {
-	const int MAXVAL = 30;
+	const int MAXVAL = 300;
 	std::map< Date, double >::iterator	itr = this->_exchangeRateDB.begin();
 
 	std::cout << std::endl << "DATABASE (date: xr)" << std::endl;
@@ -69,15 +69,26 @@ void	BitcoinExchange::printDB(void)
 		std::cout << "..." << std::endl << std::endl;
 }
 
+bool isDouble(const std::string& input)
+{
+	char* end;
+	std::strtod(input.c_str(), &end);
+	return (end == input.c_str() + input.size()) && (input.size() > 0);
+}
+
 void	BitcoinExchange::processLine(const std::string& line)
 {
 	try
 	{
-		size_t	firstLinePos = line.find(' ');
-		Date	extractedDate(line.substr(0, firstLinePos));
-		double	extractedValue = std::stod(line.substr(firstLinePos + 1, line.size()));
-		double	xr;
-		bool	found = false;
+		double		xr = 0;
+		bool		found = false;
+		size_t		firstLinePos = line.find(' ');
+		Date		extractedDate(line.substr(0, firstLinePos));
+		std::string	extractedValueStr = line.substr(firstLinePos + 3, line.size());
+		double		extractedValue = strtod(extractedValueStr.c_str(), NULL);
+
+		if (!isDouble(extractedValueStr))
+			throw std::invalid_argument("Error: invalid value!");
 
 		while (!found && extractedDate > this->_min)
 		{
@@ -88,7 +99,7 @@ void	BitcoinExchange::processLine(const std::string& line)
 			}
 			extractedDate.decrement();
 		}
-		
+
 		if (extractedValue < 0)
 			std::cout << "Error: not a positive number." << std::endl;
 		else if (extractedValue > 1000)
@@ -108,7 +119,7 @@ void	BitcoinExchange::processInput(const std::string& input_file)
 	std::ifstream	inFile;
 	std::string		line;
 
-	inFile.open(input_file);
+	inFile.open(input_file.c_str());
 	if (!inFile.is_open())
 		throw std::invalid_argument("Error: Input File could not be openned.");
 	
