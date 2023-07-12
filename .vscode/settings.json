@@ -68,6 +68,12 @@
 		"algorithm": "cpp",
 		"iterator": "cpp",
 		"memory_resource": "cpp",
-		"filesystem": "cpp"
+		"filesystem": "cpp",
+		"bit": "cpp",
+		"*.tcc": "cpp",
+		"functional": "cpp",
+		"numeric": "cpp",
+		"random": "cpp",
+		"utility": "cpp"
 	}
 }
