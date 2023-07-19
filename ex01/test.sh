@@ -4,6 +4,7 @@ echo "----------------------------------------------------------------------"
 echo
 make re
 echo
+
 echo
 echo "TESTING BASIC ADDITION..."
 echo "----------------------------------------------------------------------"
@@ -21,6 +22,7 @@ echo "\"2 3 + 4\" should print \"Error\"..."
 ./bin/RPN "2 3 + 4"
 echo
 
+echo
 echo "TESTING BASIC SUBSTRACTION..."
 echo "----------------------------------------------------------------------"
 echo
@@ -37,6 +39,7 @@ echo "\"2 3 - 4\" should print \"Error\"..."
 ./bin/RPN "2 3 - 4"
 echo
 
+echo
 echo "TESTING BASIC MULTIPLICATION..."
 echo "----------------------------------------------------------------------"
 echo
@@ -53,7 +56,7 @@ echo "\"2 3 * 4\" should print \"Error\"..."
 ./bin/RPN "2 3 * 4"
 echo
 
-
+echo
 echo "TESTING BASIC DIVISION..."
 echo "----------------------------------------------------------------------"
 echo
@@ -70,6 +73,24 @@ echo "\"2 3 / 4\" should print \"Error\"..."
 ./bin/RPN "2 3 / 4"
 echo
 
+echo
+echo "TESTING SUBJECT CHECKS..."
+echo "----------------------------------------------------------------------"
+echo
+echo "\"8 9 * 9 - 9 - 9 - 4 - 1 +\" should print \"42\"..."
+./bin/RPN "8 9 * 9 - 9 - 9 - 4 - 1 +"
+echo
+echo "\"7 7 * 7 -\" should print \"42\"..."
+./bin/RPN "7 7 * 7 -"
+echo
+echo "\"1 2 * 2 / 2 * 2 4 - +\" should print \"0\"..."
+./bin/RPN "1 2 * 2 / 2 * 2 4 - +"
+echo
+echo "\"(1 + 1)\" should print \"Error\"..."
+./bin/RPN "(1 + 1)"
+echo
+
+echo
 echo "TESTING EVALUATION CHECKS..."
 echo "----------------------------------------------------------------------"
 echo
