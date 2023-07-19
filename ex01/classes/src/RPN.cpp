@@ -91,39 +91,25 @@ void	RPN::processStr(void)
 		{
 			if (this->_numberStack.size() < 2)
 				throw std::invalid_argument("Error: invalid input!");
+			temp = this->_numberStack.top();
+			this->_numberStack.pop();
 			switch (*(str + i))
 			{
 				case '+':
-					temp = this->_numberStack.top();
-					this->_numberStack.pop();
 					temp = this->_numberStack.top() + temp;
-					this->_numberStack.pop();
-					this->_numberStack.push(temp);
 					break;
 				case '-':
-					temp = this->_numberStack.top();
-					this->_numberStack.pop();
 					temp = this->_numberStack.top() - temp;
-					this->_numberStack.pop();
-					this->_numberStack.push(temp);
 					break;
 				case '/':
-					temp = this->_numberStack.top();
-					this->_numberStack.pop();
 					temp = this->_numberStack.top() / temp;
-					this->_numberStack.pop();
-					this->_numberStack.push(temp);
 					break;
 				case '*':
-					temp = this->_numberStack.top();
-					this->_numberStack.pop();
 					temp = this->_numberStack.top() * temp;
-					this->_numberStack.pop();
-					this->_numberStack.push(temp);
-					break;
-				default:
 					break;
 			}
+			this->_numberStack.pop();
+			this->_numberStack.push(temp);
 		}
 		i++;
 	}
