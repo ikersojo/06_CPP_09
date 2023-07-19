@@ -29,10 +29,7 @@ static bool	validChars(const char *str)
 	while (*(str + i) && *(str + i + 1))
 	{
 		if (*(str + i) != ' ' && *(str +i + 1) != ' ')
-		{
-			std::cout << "double chars" << std::endl; // <------ DEBUG
 			return false;
-		}
 		i++;
 	}
 	return true;
@@ -83,7 +80,6 @@ void	RPN::processStr(void)
 	size_t		i = 0;
 	int			temp = 0;
 
-	this->_result = 0;
 	i = 0;
 	while (*(str + i))
 	{
@@ -93,50 +89,36 @@ void	RPN::processStr(void)
 			;
 		else
 		{
+			if (this->_numberStack.size() < 2)
+				throw std::invalid_argument("Error: invalid input!");
 			switch (*(str + i))
 			{
 				case '+':
 					temp = this->_numberStack.top();
 					this->_numberStack.pop();
-					while (this->_numberStack.size() != 0)
-					{
-						temp += this->_numberStack.top();
-						this->_numberStack.pop();
-						// numCounter--;
-					}
+					temp = this->_numberStack.top() + temp;
+					this->_numberStack.pop();
 					this->_numberStack.push(temp);
 					break;
 				case '-':
 					temp = this->_numberStack.top();
 					this->_numberStack.pop();
-					while (this->_numberStack.size() != 0)
-					{
-						temp -= this->_numberStack.top();
-						this->_numberStack.pop();
-						// numCounter--;
-					}
+					temp = this->_numberStack.top() - temp;
+					this->_numberStack.pop();
 					this->_numberStack.push(temp);
 					break;
 				case '/':
 					temp = this->_numberStack.top();
 					this->_numberStack.pop();
-					while (this->_numberStack.size() != 0)
-					{
-						temp /= this->_numberStack.top();
-						this->_numberStack.pop();
-						// numCounter--;
-					}
+					temp = this->_numberStack.top() / temp;
+					this->_numberStack.pop();
 					this->_numberStack.push(temp);
 					break;
 				case '*':
 					temp = this->_numberStack.top();
 					this->_numberStack.pop();
-					while (this->_numberStack.size() != 0)
-					{
-						temp *= this->_numberStack.top();
-						this->_numberStack.pop();
-						// numCounter--;
-					}
+					temp = this->_numberStack.top() * temp;
+					this->_numberStack.pop();
 					this->_numberStack.push(temp);
 					break;
 				default:
@@ -145,11 +127,8 @@ void	RPN::processStr(void)
 		}
 		i++;
 	}
-	// if (signCounter < 1 || initCounter < 2)
-	// {
-	// 	std::cout << "not enough args" << std::endl; // <------ DEBUG
-	// 	throw std::invalid_argument("Error: invalid input!");
-	// }
+	if (this->_numberStack.size() > 1)
+		throw std::invalid_argument("Error: invalid input!");
 	this->_result = this->_numberStack.top();
 	this->_numberStack.pop();
 }

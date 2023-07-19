@@ -11,9 +11,9 @@ int		main(int argc, char **argv)
 	}
 	catch(const std::exception& e)
 	{
-		std::cout << "Error1" << std::endl;
+		std::cout << "Error" << std::endl;
 	}
 	else
-		std::cout << "Error2" << std::endl;
+		std::cout << "Error" << std::endl;
 	return (0);
 }
