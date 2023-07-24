@@ -12,7 +12,15 @@ int		main(int argc, char **argv)
 			input.append(" ");
 	}
 
-	std::cout << input << std::endl;
-
+	try
+	{
+		PmergeMe p(input);
+		p.processStr();
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	
 	return (0);
 }

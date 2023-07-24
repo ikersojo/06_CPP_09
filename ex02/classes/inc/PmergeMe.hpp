@@ -3,8 +3,12 @@
 
 	#include <iostream>
 	#include <string>
-	#include <stack>
+	#include <vector>
+	#include <list>
 	#include <cstdlib>
+	#include <ctime>
+	#include <sstream>
+	#include <algorithm>
 
 	class PmergeMe
 	{
@@ -16,11 +20,18 @@
 
 			PmergeMe&	operator=(const PmergeMe& rhd);
 
-
 			std::string		getStr(void) const;
 
+			void	processStr(void);
+
 		private:
-			std::string	_str;
+			std::string			_str;
+			std::vector< int >	_vector;
+			std::list< int >	_list;
+			long				_elapsedTimeV;
+			long				_elapsedTimeL;
+
+			void	printResults(void);
 
 	};
 
